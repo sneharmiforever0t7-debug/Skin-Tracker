@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pastel Skincare Routine</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div id="cover">
+  <h1>💗 Skincare Guide</h1>
+  <p>Your cute pastel routine based on your skin type!</p>
+  <button id="nextBtn">Next →</button>
+</div>
+
+<!-- MAIN PAGE -->
+<div id="main">
+  <h2>Choose Your Skin Type 💕</h2>
+
+  <select id="skinType">
+    <option value="">-- Select Skin Type --</option>
+    <option value="oily">Oily Skin</option>
+    <option value="dry">Dry Skin</option>
+    <option value="normal">Normal Skin</option>
+    <option value="combination">Combination Skin</option>
+    <option value="sensitive">Sensitive Skin</option>
+  </select>
+
+  <label for="userNote">Your Skin Note 📝</label>
+  <input type="text" id="userNote" placeholder="e.g. Feeling dry today..." />
+
+  <button id="showRoutineBtn">Show Routine</button>
+
+  <div id="result" class="routine-box" style="display:none;"></div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
