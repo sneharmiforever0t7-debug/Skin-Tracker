@@ -1,40 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Pastel Skincare Routine</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skin Tracker</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- COVER PAGE -->
-<div id="cover">
-  <h1>💗 Skincare Guide</h1>
-  <p>Your cute pastel routine based on your skin type!</p>
-  <button id="nextBtn">Next →</button>
-</div>
+    <!-- Login Page -->
+    <section id="loginPage" class="welcome hidden">
+        <h1>Login</h1>
+        <input type="text" id="loginUser" placeholder="Username">
+        <input type="password" id="loginPass" placeholder="Password">
+        <button id="loginBtn">Login</button>
+        <p>Don't have an account? <span id="goSignup" class="link">Sign Up</span></p>
+    </section>
 
-<!-- MAIN PAGE -->
-<div id="main">
-  <h2>Choose Your Skin Type 💕</h2>
+    <!-- Signup Page -->
+    <section id="signupPage" class="welcome hidden">
+        <h1>Create Account</h1>
+        <input type="text" id="signupUser" placeholder="Choose Username">
+        <input type="password" id="signupPass" placeholder="Choose Password">
+        <button id="signupBtn">Sign Up</button>
+        <p>Already have an account? <span id="goLogin" class="link">Login</span></p>
+    </section>
 
-  <select id="skinType">
-    <option value="">-- Select Skin Type --</option>
-    <option value="oily">Oily Skin</option>
-    <option value="dry">Dry Skin</option>
-    <option value="normal">Normal Skin</option>
-    <option value="combination">Combination Skin</option>
-    <option value="sensitive">Sensitive Skin</option>
-  </select>
+    <!-- Welcome Page -->
+    <section id="welcomePage" class="welcome">
+        <h1>Welcome to Your Skin Tracker</h1>
+        <p>Track your skin, understand patterns, and glow every day.</p>
+        <button id="startBtn">Start Tracking</button>
+    </section>
 
-  <label for="userNote">Your Skin Note 📝</label>
-  <input type="text" id="userNote" placeholder="e.g. Feeling dry today..." />
+    <!-- Main Tracker Page -->
+    <section id="trackerPage" class="hidden">
 
-  <button id="showRoutineBtn">Show Routine</button>
+        <header>
+            <h1>Daily Skin Tracker</h1>
+        </header>
 
-  <div id="result" class="routine-box" style="display:none;"></div>
-</div>
+        <section class="tracker-form">
+            <h2>Daily Skin Log</h2>
 
-<script src="script.js"></script>
+            <label>Skin Condition:</label>
+            <select id="condition">
+                <option value="Clear">Clear</option>
+                <option value="Oily">Oily</option>
+                <option value="Dry">Dry</option>
+                <option value="Redness">Redness</option>
+                <option value="Acne">Acne</option>
+            </select>
+
+            <label>Products Used:</label>
+            <input type="text" id="products" placeholder="e.g., Cleanser, Moisturizer">
+
+            <label>Upload Photo:</label>
+            <input type="file" id="photo" accept="image/*">
+
+            <button id="saveBtn">Save Entry</button>
+        </section>
+
+        <section class="suggestions">
+            <h2>Skin Suggestions</h2>
+            <p id="suggestionText">Select a skin condition to see suggestions.</p>
+        </section>
+
+        <section class="product-suggestions">
+            <h2>Recommended Products</h2>
+            <ul id="productList"></ul>
+        </section>
+
+        <section class="entries">
+            <h2>Previous Entries</h2>
+            <div id="entryList"></div>
+        </section>
+
+        <!-- Logout at the bottom -->
+        <button id="logoutBtn" class="logout-bottom">Logout</button>
+
+    </section>
+
+    <script src="script.js"></script>
 </body>
 </html>

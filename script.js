@@ -1,109 +1,189 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const nextBtn = document.getElementById("nextBtn");
-  const main = document.getElementById("main");
-  const cover = document.getElementById("cover");
-  const showRoutineBtn = document.getElementById("showRoutineBtn");
-  const skinTypeSelect = document.getElementById("skinType");
-  const resultBox = document.getElementById("result");
+// Page references
+const welcomePage = document.getElementById("welcomePage");
+const loginPage = document.getElementById("loginPage");
+const signupPage = document.getElementById("signupPage");
+const trackerPage = document.getElementById("trackerPage");
 
-  nextBtn.onclick = () => {
-    cover.style.display = "none";
-    main.style.display = "block";
-  };
+// Start → Go to Login
+document.getElementById("startBtn").addEventListener("click", () => {
+    welcomePage.classList.add("hidden");
+    loginPage.classList.remove("hidden");
+});
 
-  const routines = {
-    oily: [
-      "Foaming or Gel Cleanser",
-      "Niacinamide Serum",
-      "Oil-free Moisturizer",
-      "Gel-based Sunscreen"
-    ],
-    dry: [
-      "Cream Cleanser",
-      "Hyaluronic Acid Serum",
-      "Thick Moisturizer",
-      "Hydrating Sunscreen"
-    ],
-    normal: [
-      "Gentle Cleanser",
-      "Brightening Serum",
-      "Normal Moisturizer",
-      "SPF 30+ Sunscreen"
-    ],
-    combination: [
-      "Gel Cleanser",
-      "Vitamin C or Niacinamide Serum",
-      "Light Moisturizer",
-      "SPF 30+ Sunscreen"
-    ],
-    sensitive: [
-      "Fragrance-free Cleanser",
-      "Aloe / Centella Serum",
-      "Hypoallergenic Moisturizer",
-      "Mineral Sunscreen"
-    ]
-  };
-const descriptions = {
-  "Foaming or Gel Cleanser": "Helps remove excess oil and dirt without stripping your skin.",
-  "Niacinamide Serum": "Reduces oiliness and improves skin texture.",
-  "Oil-free Moisturizer": "Hydrates without clogging pores — perfect for oily skin.",
-  "Gel-based Sunscreen": "Lightweight sun protection that won’t feel greasy.",
+// Go to Signup
+document.getElementById("goSignup").addEventListener("click", () => {
+    loginPage.classList.add("hidden");
+    signupPage.classList.remove("hidden");
+});
 
-  "Cream Cleanser": "Gently cleanses while adding moisture — ideal for dry skin.",
-  "Hyaluronic Acid Serum": "Deeply hydrates and plumps your skin.",
-  "Thick Moisturizer": "Locks in hydration and prevents flakiness.",
-  "Hydrating Sunscreen": "Protects while keeping skin soft and moisturized.",
+// Go to Login
+document.getElementById("goLogin").addEventListener("click", () => {
+    signupPage.classList.add("hidden");
+    loginPage.classList.remove("hidden");
+});
 
-  "Gentle Cleanser": "Mild and non-stripping — great for everyday use.",
-  "Brightening Serum": "Improves glow and evens out skin tone.",
-  "Normal Moisturizer": "Balances hydration for healthy skin.",
-  "SPF 30+ Sunscreen": "Shields your skin from UV damage.",
+// Signup
+document.getElementById("signupBtn").addEventListener("click", () => {
+    const user = document.getElementById("signupUser").value;
+    const pass = document.getElementById("signupPass").value;
 
-  "Vitamin C or Niacinamide Serum": "Brightens and protects against environmental stress.",
-  "Light Moisturizer": "Hydrates without heaviness — perfect for combo skin.",
+    if (!user || !pass) {
+        alert("Please fill all fields");
+        return;
+    }
 
-  "Fragrance-free Cleanser": "Avoids irritation by skipping perfumes and harsh additives.",
-  "Aloe / Centella Serum": "Soothes redness and calms sensitive skin.",
-  "Hypoallergenic Moisturizer": "Minimizes allergic reactions with gentle ingredients.",
-  "Mineral Sunscreen": "Uses zinc or titanium to reflect UV rays — ideal for sensitive skin."
-};
+    localStorage.setItem("skinUser", JSON.stringify({ user, pass }));
+    alert("Account created!");
 
+    signupPage.classList.add("hidden");
+    trackerPage.classList.remove("hidden");
+});
 
-const userNoteInput = document.getElementById("userNote");
+// Login
+document.getElementById("loginBtn").addEventListener("click", () => {
+    const user = document.getElementById("loginUser").value;
+    const pass = document.getElementById("loginPass").value;
 
-showRoutineBtn.onclick = () => {
-  const type = skinTypeSelect.value;
-  const note = userNoteInput.value.trim();
-  let suggestion = "";
+    const saved = JSON.parse(localStorage.getItem("skinUser"));
 
-if (note.includes("sun") || note.includes("UV")) {
-  suggestion = "🌞 Tip: Try a mineral sunscreen with zinc oxide for better sun protection.";
-} else if (note.includes("dry") || note.includes("flaky")) {
-  suggestion = "💧 Tip: Use a hydrating serum with hyaluronic acid and avoid foaming cleansers.";
-} else if (note.includes("irritated") || note.includes("red")) {
-  suggestion = "🍃 Tip: Look for products with Centella Asiatica or Aloe Vera to calm irritation.";
-} else if (note.includes("oily") || note.includes("greasy")) {
-  suggestion = "✨ Tip: Use a gel-based cleanser and avoid heavy creams.";
+    if (!saved || saved.user !== user || saved.pass !== pass) {
+        alert("Incorrect username or password");
+        return;
+    }
+
+    loginPage.classList.add("hidden");
+    trackerPage.classList.remove("hidden");
+});
+
+// Logout
+document.getElementById("logoutBtn").addEventListener("click", () => {
+    trackerPage.classList.add("hidden");
+    loginPage.classList.remove("hidden");
+});
+
+// Skin Suggestions
+const suggestionBox = document.getElementById("suggestionText");
+document.getElementById("condition").addEventListener("change", showSuggestion);
+
+function showSuggestion() {
+    const condition = document.getElementById("condition").value;
+
+    const suggestions = {
+        "Clear": "Keep up your routine! Stay hydrated and use sunscreen daily.",
+        "Oily": "Use gel-based moisturizers, avoid heavy creams, and cleanse twice a day.",
+        "Dry": "Use hydrating serums, thicker moisturizers, and avoid hot water.",
+        "Redness": "Use calming products like aloe or centella. Avoid harsh scrubs.",
+        "Acne": "Use salicylic acid or niacinamide. Avoid touching your face often."
+    };
+
+    suggestionBox.textContent = suggestions[condition];
+    showProductSuggestions(condition);
 }
 
-  if (!type) {
-    resultBox.style.display = "none";
-    return;
-  }
-
-  const steps = routines[type];
-  resultBox.innerHTML =
-  "<h3 style='color:#ff77b4; text-align:center;'>Your Routine 💗</h3>" +
-steps.map(step => `
-  <div class='step'>
-    <strong>${step}</strong><br>
-    <span style="font-size:14px; color:#555;">${descriptions[step] || ""}</span>
-  </div>
-`).join("")
-+
-  (note ? `<p style='margin-top:15px; font-style:italic;'>📝 Your note: ${note}</p>` : "") +
-  (suggestion ? `<p style='margin-top:10px;'>${suggestion}</p>` : "");
-
-  resultBox.style.display = "block";
+// Product Suggestions
+const productSuggestions = {
+    "Clear": [
+        "Lightweight gel moisturizer",
+        "Daily sunscreen SPF 50",
+        "Gentle foaming cleanser"
+    ],
+    "Oily": [
+        "Oil-free gel moisturizer",
+        "Salicylic acid face wash",
+        "Niacinamide serum (10%)"
+    ],
+    "Dry": [
+        "Hyaluronic acid serum",
+        "Thick ceramide moisturizer",
+        "Cream-based hydrating cleanser"
+    ],
+    "Redness": [
+        "Aloe vera soothing gel",
+        "Centella asiatica serum",
+        "Fragrance-free moisturizer"
+    ],
+    "Acne": [
+        "2% Salicylic acid serum",
+        "Benzoyl peroxide spot treatment",
+        "Non-comedogenic moisturizer"
+    ]
 };
-});
+
+function showProductSuggestions(condition) {
+    const list = document.getElementById("productList");
+    list.innerHTML = "";
+
+    productSuggestions[condition].forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        list.appendChild(li);
+    });
+}
+
+// Save Entry
+document.getElementById("saveBtn").addEventListener("click", saveEntry);
+
+function saveEntry() {
+    const condition = document.getElementById("condition").value;
+    const products = document.getElementById("products").value;
+    const photoInput = document.getElementById("photo");
+
+    let photoURL = "";
+    if (photoInput.files.length > 0) {
+        photoURL = URL.createObjectURL(photoInput.files[0]);
+    }
+
+    const entry = {
+        date: new Date().toLocaleDateString(),
+        condition,
+        products,
+        photoURL
+    };
+
+    let entries = JSON.parse(localStorage.getItem("skinEntries")) || [];
+    entries.push(entry);
+    localStorage.setItem("skinEntries", JSON.stringify(entries));
+
+    displayEntries();
+
+    // RESET FORM
+    document.getElementById("condition").value = "Clear";
+    document.getElementById("products").value = "";
+    document.getElementById("photo").value = "";
+}
+
+// Display Entries
+function displayEntries() {
+    const entryList = document.getElementById("entryList");
+    entryList.innerHTML = "";
+
+    const entries = JSON.parse(localStorage.getItem("skinEntries")) || [];
+
+    entries.forEach((entry, index) => {
+        const card = document.createElement("div");
+        card.className = "entry-card";
+
+        card.innerHTML = `
+            <p><strong>Date:</strong> ${entry.date}</p>
+            <p><strong>Condition:</strong> ${entry.condition}</p>
+            <p><strong>Products:</strong> ${entry.products}</p>
+            ${entry.photoURL ? `<img src="${entry.photoURL}">` : ""}
+            <button class="deleteBtn" onclick="deleteEntry(${index})">Delete</button>
+        `;
+
+        entryList.appendChild(card);
+    });
+}
+
+// Delete Entry
+function deleteEntry(index) {
+    let entries = JSON.parse(localStorage.getItem("skinEntries")) || [];
+
+    entries.splice(index, 1);
+
+    localStorage.setItem("skinEntries", JSON.stringify(entries));
+
+    displayEntries();
+}
+
+displayEntries();
