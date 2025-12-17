@@ -33,10 +33,10 @@ The app includes:
 - 📚 A log of previous entries
 - 🔒 A logout button for session control
 
-## 🛠 Tech Stack
+## 🛠 Languages Used
 
-- HTML5  
-- CSS3  
+- HTML
+- CSS 
 - JavaScript 
 
 ---
